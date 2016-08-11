@@ -41,9 +41,7 @@ angular.module('NgSwitchery', [])
             });
 
             // Watch changes
-            scope.$watch(function () {
-              return ngModel.$modelValue;
-            }, function(newValue,oldValue) {
+            scope.$watch('initValue', function() {
                initializeSwitch()
             });
             
