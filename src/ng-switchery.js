@@ -19,8 +19,8 @@ angular.module('NgSwitchery', [])
          */
         function linkSwitchery(scope, elem, attrs, ngModel) {
             if(!ngModel) return false;
-            var attr_opt = undefined,
-                options = NgSwitchery.config;
+            var attr_opt = undefined;
+            scope.options = NgSwitchery.config
             try {
                 attr_opt = $parse(attrs.uiSwitch)(scope);
                 if (attr_opt) {
