@@ -11,6 +11,22 @@ An AngularJS Directive for [Switchery](http://abpetkov.github.io/switchery/).
 4. Declare a dependency on the NgSwitchery module
 5. Add the `ui-switch` attribute to a checkbox.
 
+## NgSwitcheryProvider 
+Default config
+```javascript
+              color             : '#64bd63'
+            , secondaryColor    : '#dfdfdf'
+            , jackColor         : '#fff'
+            , jackSecondaryColor: null
+            , className         : 'switchery'
+            , disabled          : false
+            , disabledOpacity   : 0.5
+            , speed             : '0.4s'
+            , size              : 'default'
+```
+
+NgSwitcheryProvider.extendConfig()  to set options 
+
 ##Example##
 
 Declare a dependency on the module
