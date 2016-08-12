@@ -19,16 +19,6 @@ angular.module('NgSwitchery', [])
          */
         function linkSwitchery(scope, elem, attrs, ngModel) {
             if(!ngModel) return false;
-            var attr_opt = undefined;
-            scope.options = NgSwitchery.config
-            try {
-                attr_opt = $parse(attrs.uiSwitch)(scope);
-                if (attr_opt) {
-                    scope.options = angular.extend(scope.options, attr_opt);
-                }
-            }
-            catch (e) {}
-
             var switcher;
 
             attrs.$observe('disabled', function(value) {
@@ -51,12 +41,20 @@ angular.module('NgSwitchery', [])
             
             function initializeSwitch() {
               $timeout(function() {
+                var apply_opt = NgSwitchery.config,
+                    attr_opt;
                 // Remove any old switcher
                 if (switcher) {
                   angular.element(switcher.switcher).remove();
                 }
+                try {
+                    attr_opt = $parse(attrs.uiSwitch)(scope)
+                    if (attr_opt) {
+                        apply_opt = angular.extend(NgSwitchery.config, attr_opt);
+                    }
+                }  catch (e){}
                 // (re)create switcher to reflect latest state of the checkbox element
-                switcher = new $window.Switchery(elem[0], scope.options);
+                switcher = new $window.Switchery(elem[0], apply_opt);
                 var element = switcher.element;
                 element.checked = scope.initValue;
                 if (attrs.disabled) {
