@@ -1,9 +1,3 @@
-'use strict';
-
-/**
- * Module to use Switchery as a directive for angular.
- * @TODO implement Switchery as a service, https://github.com/abpetkov/switchery/pull/11
- */
 angular.module('NgSwitchery', [])
     .directive('uiSwitch', ['NgSwitchery','$window', '$timeout','$log', '$parse', function(NgSwitchery, $window, $timeout, $log, $parse) {
 
