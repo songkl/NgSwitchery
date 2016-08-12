@@ -24,7 +24,7 @@ angular.module('NgSwitchery', [])
             try {
                 attr_opt = $parse(attrs.uiSwitch)(scope);
                 if (attr_opt) {
-                    scope.options = angular.extend(options, attr_opt);
+                    scope.options = angular.extend(scope.options, attr_opt);
                 }
             }
             catch (e) {}
