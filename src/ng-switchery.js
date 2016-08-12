@@ -5,7 +5,7 @@
  * @TODO implement Switchery as a service, https://github.com/abpetkov/switchery/pull/11
  */
 angular.module('NgSwitchery', [])
-    .directive('uiSwitch', ['$window', '$timeout','$log', '$parse', function($window, $timeout, $log, $parse) {
+    .directive('uiSwitch', ['NgSwitchery','$window', '$timeout','$log', '$parse', function(NgSwitchery, $window, $timeout, $log, $parse) {
 
         /**
          * Initializes the HTML element as a Switchery switch.
@@ -19,9 +19,13 @@ angular.module('NgSwitchery', [])
          */
         function linkSwitchery(scope, elem, attrs, ngModel) {
             if(!ngModel) return false;
-            var options = {};
+            var attr_opt = undefined,
+                options = NgSwitchery.config;
             try {
-                options = $parse(attrs.uiSwitch)(scope);
+                attr_opt = $parse(attrs.uiSwitch)(scope);
+                if (attr_opt) {
+                    scope.options = angular.extend(options, attr_opt);
+                }
             }
             catch (e) {}
 
@@ -41,7 +45,7 @@ angular.module('NgSwitchery', [])
             });
 
             // Watch changes
-            scope.$watch('initValue', function() {
+            scope.$watch('initValue', function () {
                initializeSwitch()
             });
             
@@ -52,7 +56,7 @@ angular.module('NgSwitchery', [])
                   angular.element(switcher.switcher).remove();
                 }
                 // (re)create switcher to reflect latest state of the checkbox element
-                switcher = new $window.Switchery(elem[0], options);
+                switcher = new $window.Switchery(elem[0], scope.options);
                 var element = switcher.element;
                 element.checked = scope.initValue;
                 if (attrs.disabled) {
@@ -70,7 +74,6 @@ angular.module('NgSwitchery', [])
                 });
               }, 0);
             }
-            initializeSwitch();
           }
 
         return {
@@ -81,4 +84,34 @@ angular.module('NgSwitchery', [])
             },
             link: linkSwitchery
         }
-    }]);
+    }])
+    .provider('NgSwitchery',function NgSwitcheryProvider() {
+
+        var config = {
+            color             : '#64bd63'
+            , secondaryColor    : '#dfdfdf'
+            , jackColor         : '#fff'
+            , jackSecondaryColor: null
+            , className         : 'switchery'
+            , disabled          : false
+            , disabledOpacity   : 0.5
+            , speed             : '0.4s'
+            , size              : 'default'
+        };
+
+
+        return {
+
+            extendConfig : function (newConfig) {
+                config = angular.extend(config, newConfig);
+            },
+
+            $get : function () {
+              return {
+                  config : config
+              }
+            }
+
+        };
+
+    });
